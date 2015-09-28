@@ -1,0 +1,24 @@
+{
+  "name": "trintak",
+  "version": "0.0.0",
+  "description": "Currency conversor API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "currency",
+    "finance",
+    "converter",
+    "hapijs",
+    "open-exchange-rate",
+    "money"
+  ],
+  "author": "Moises Ribeiro Junior",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "~10.1.0",
+    "joi": "~6.7.1",
+    "wreck": "~6.3.0"
+  }
+}
