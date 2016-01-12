@@ -12,7 +12,7 @@ var server = new Hapi.Server();
 
 server.connection({
 	port: process.env.PORT || 1229
-});3
+});
 
 
 server.method('currency.fetch', function(currency, value, callback) {
