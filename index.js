@@ -2,10 +2,26 @@ var Hapi = require('hapi');
 var Joi = require('joi');
 var Wreck = require('wreck');
 
-
 var URL = 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s={0}{1}=X';
 var CurrencyClient = Wreck.defaults({ redirects: 3});
-var currencies = ['BRL','EUR','USD','GBP'];
+var currencies = ['BRL','EUR','USD','GBP','SEK'];
+
+function createUUID() {
+    // http://www.ietf.org/rfc/rfc4122.txt
+    var s = [];
+    var hexDigits = "0123456789abcdef";
+    for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+    s[8] = s[13] = s[18] = s[23] = "-";
+
+    var uuid = s.join("");
+    return uuid;
+}
+
+
 
 // Create a server with a host and port
 var server = new Hapi.Server();
@@ -62,7 +78,10 @@ server.route({
 		request.server.methods.currency.fetch(currency, value, function(err, rate){
 			if (err)
 				return reply({error: 'shit happened'}).code(400);
-			console.log(rate);
+			rate.push( {
+				uuid: createUUID()
+			})
+			server.log('info', rate);
 			reply(JSON.stringify(rate));
 		});
 	}
